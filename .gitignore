@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+
+# 虚拟环境
+venv/
+env/
+.venv/
+
+# 审计数据库（运行时生成）
+data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 操作系统
+.DS_Store
+Thumbs.db
+
+# 测试缓存
+.pytest_cache/
+.coverage
+htmlcov/

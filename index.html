@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>访问控制台 · AegisData 企业数据安全管理平台</title>
+<link rel="icon" type="image/png" href="/static/aegisdata-logo.png">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body data-page="console">
+
+<!-- ══════════ 顶部栏 ══════════ -->
+<header class="top">
+  <a class="top__brand" href="/">
+                    <span class="top__logo" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="AegisData">
+  <defs>
+    <linearGradient id="adg" x1="0%" y1="10%" x2="88%" y2="100%">
+      <stop offset="0%"   stop-color="#2b3f9e"/>
+      <stop offset="28%"  stop-color="#2f6cc0"/>
+      <stop offset="60%"  stop-color="#37a3c9"/>
+      <stop offset="100%" stop-color="#4ad2c0"/>
+    </linearGradient>
+    <linearGradient id="adl" x1="10%" y1="0%" x2="90%" y2="100%">
+      <stop offset="0%"   stop-color="#6fa8ec"/>
+      <stop offset="100%" stop-color="#93f0dd"/>
+    </linearGradient>
+  </defs>
+
+  
+  <path fill="none" stroke="url(#adg)" stroke-width="20"
+        stroke-linecap="round" stroke-linejoin="round"
+        d="M64 44
+           C86 20 110 18 128 32
+           C146 46 162 50 178 46
+           L193 43
+           L172 58
+           C154 68 138 64 124 52
+           C104 36 84 46 76 68
+           Q60 106 76 138
+           Q92 168 118 178
+           Q148 166 156 138
+           Q166 106 152 80"/>
+
+  
+  <path fill="none" stroke="url(#adl)" stroke-opacity=".68" stroke-width="9"
+        stroke-linecap="round" stroke-linejoin="round"
+        d="M82 64
+           Q66 102 80 134
+           Q94 160 116 168
+           Q140 158 146 132
+           Q154 104 142 84"/>
+</svg>
+    </span>
+    <span class="top__name">AegisData</span>
+  </a>
+  <span class="top__divider"></span>
+  <span class="top__title">企业数据安全管理平台</span>
+
+  <div class="top__right">
+    <button class="iconbtn" type="button" aria-label="通知">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M18 8.5a6 6 0 1 0-12 0c0 5-2 6.5-2 6.5h16s-2-1.5-2-6.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M13.7 19a2 2 0 0 1-3.4 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <span class="top__user">
+      <span class="top__avatar">张</span>
+      <span class="top__who">
+        <b>张三</b>
+        <span>普通员工</span>
+      </span>
+      <svg class="top__chev" viewBox="0 0 20 20" fill="none">
+        <path d="M6 8.5l4 4 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+    <button class="iconbtn" id="logoutBtn" type="button" aria-label="登出" title="登出">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M15 12H4M15 12l-3.5-3.5M15 12l-3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M9 4h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<div class="shell">
+
+  <!-- ══════════ 侧边导航 ══════════ -->
+  <aside class="sidebar">
+    <nav class="nav" aria-label="主导航">
+      <p class="nav__group">数据访问</p>
+      <a class="nav__item is-active" href="/" data-nav="console" aria-current="page">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 10.5 12 4l8 6.5V19a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19v-8.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+          <path d="M9.5 20.5v-5.2h5v5.2" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+        </svg>
+        <span>访问控制台</span>
+      </a>
+      <a class="nav__item" href="/audit" data-nav="audit">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="4" y="3.5" width="16" height="17" rx="2.5" stroke="currentColor" stroke-width="1.7"/>
+          <path d="M7.5 8.5h6M7.5 12h9M7.5 15.5h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+        </svg>
+        <span>审计日志</span>
+        <i class="nav__count" id="navCount">0</i>
+      </a>
+
+      <p class="nav__group">策略与说明</p>
+      <a class="nav__item" href="/rules" data-nav="rules">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 3.5l7.5 3v5.6c0 4.3-3 7.7-7.5 9.4-4.5-1.7-7.5-5.1-7.5-9.4V6.5l7.5-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+          <path d="M9 12l2.2 2.2L15.4 10" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>权限规则</span>
+      </a>
+      <a class="nav__item" href="/about" data-nav="about">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/>
+          <path d="M12 11v5.2M12 7.9h.01" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+        </svg>
+        <span>系统说明</span>
+      </a>
+    </nav>
+
+    <div class="sidebar__foot">
+      <b>AegisData</b>
+      <span>让数据访问更安全、更可控</span>
+    </div>
+  </aside>
+
+  <!-- ══════════ 主区域 ══════════ -->
+  <div class="main">
+
+    <section class="hero">
+      <h1>欢迎使用 AegisData 企业数据安全管理平台</h1>
+      <p>基于最小权限原则，通过智能权限判断与审计机制，确保企业数据的安全访问与合规使用。</p>
+    </section>
+
+    <!-- 统计概览 -->
+    <section class="stats" aria-label="概览">
+      <dl class="stat">
+        <span class="stat__ico stat__ico--blue">
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="8.2" r="3.7" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M4.8 20c.6-3.6 3.6-6 7.2-6s6.6 2.4 7.2 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="stat__body">
+          <dt>当前用户</dt>
+          <dd id="currentUserName">张三</dd>
+          <span class="stat__note" id="currentUserRole">普通员工 · employee</span>
+        </span>
+      </dl>
+
+      <dl class="stat">
+        <span class="stat__ico stat__ico--green">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M6 3.5h7.2L18.5 8.7V20.5H6V3.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+            <path d="M13 3.5v5.4h5.3" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="stat__body">
+          <dt>受控数据资源</dt>
+          <dd>3 个</dd>
+          <span class="stat__note">F001 / F002 / F003</span>
+        </span>
+      </dl>
+
+      <dl class="stat">
+        <span class="stat__ico stat__ico--blue">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 3.5l7.5 3v5.6c0 4.3-3 7.7-7.5 9.4-4.5-1.7-7.5-5.1-7.5-9.4V6.5l7.5-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="stat__body">
+          <dt>今日访问请求</dt>
+          <dd id="statToday">0</dd>
+          <span class="stat__note">比昨日 <span class="stat__trend">↑ 20%</span></span>
+        </span>
+      </dl>
+
+      <dl class="stat">
+        <span class="stat__ico stat__ico--orange">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="4" y="3.5" width="16" height="17" rx="2.5" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M8 8.5h8M8 12h8M8 15.5h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="stat__body">
+          <dt>审计日志</dt>
+          <dd id="statLogs">0</dd>
+          <span class="stat__note">完整记录访问行为</span>
+        </span>
+      </dl>
+    </section>
+
+    <!-- 访问申请 -->
+    <section class="card" id="request">
+      <div class="card__head">
+        <h2>访问申请</h2>
+        <span class="hint">所有受保护操作必须经过统一入口判定</span>
+      </div>
+
+      <form class="form" id="requestForm" autocomplete="off">
+        <div class="field">
+          <label for="role">角色选择</label>
+          <div class="select">
+            <select id="role" name="user_role">
+              <option value="employee">普通员工 · employee</option>
+              <option value="finance">财务人员 · finance</option>
+              <option value="admin">管理员 · admin</option>
+              <option value="hr">人事专员 · hr</option>
+              <option value="auditor">内部审计 · auditor</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="file">文件选择</label>
+          <div class="select">
+            <select id="file" name="file_id">
+              <option value="F001">F001 · 普通业务报告</option>
+              <option value="F002">F002 · 内部财务报告</option>
+              <option value="F003">F003 · 敏感工资表</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="action">操作类型</label>
+          <div class="select">
+            <select id="action" name="action">
+              <option value="read">读取</option>
+              <option value="export">导出</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn btn--primary" type="submit" id="submitBtn">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M17.5 2.5 8 12M17.5 2.5 12 17.5l-3.5-5.5-5.5-3.5 14.5-6Z" stroke="currentColor"
+                  stroke-width="1.6" stroke-linejoin="round"/>
+          </svg>
+          <span>提交申请</span>
+        </button>
+      </form>
+
+      <!-- 快速验证场景 -->
+      <div class="scenes">
+        <p class="scenes__title">五个快速验证场景</p>
+        <div class="scenes__list">
+          <button class="scene is-allow" type="button" data-r="employee" data-f="F001" data-a="read">
+            <span class="scene__ico scene__ico--green">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M6 3.5h7.2L18.5 8.7V20.5H6V3.5Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/>
+                <path d="M9 13.8h6M9 17h4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span class="scene__text">
+              <b>1. 正常访问</b>
+              <span>普通员工查看文档</span>
+            </span>
+          </button>
+
+          <button class="scene is-deny" type="button" data-r="employee" data-f="F002" data-a="read">
+            <span class="scene__ico scene__ico--red">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.9"/>
+                <path d="M6.6 17.4 17.4 6.6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span class="scene__text">
+              <b>2. 拒绝访问</b>
+              <span>普通员工读取财务报告</span>
+            </span>
+          </button>
+
+          <button class="scene is-pending" type="button" data-r="employee" data-f="F002" data-a="export">
+            <span class="scene__ico scene__ico--orange">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.9"/>
+                <path d="M12 7.4V12l3.2 2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="scene__text">
+              <b>3. 待审批</b>
+              <span>普通员工导出财务报告</span>
+            </span>
+          </button>
+
+          <button class="scene is-admin" type="button" data-r="admin" data-f="F003" data-a="read">
+            <span class="scene__ico scene__ico--blue">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="8.2" r="3.7" stroke="currentColor" stroke-width="1.9"/>
+                <path d="M4.8 20c.6-3.6 3.6-6 7.2-6s6.6 2.4 7.2 6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span class="scene__text">
+              <b>4. 管理员访问</b>
+              <span>管理员读取敏感工资表</span>
+            </span>
+          </button>
+
+          <button class="scene is-edge" type="button" data-r="finance" data-f="F003" data-a="read">
+            <span class="scene__ico scene__ico--violet">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M3.5 16.5 9 10l4 4 7.5-8.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M15.5 5.5H20.5V10.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="scene__text">
+              <b>5. 跨角色边界</b>
+              <span>财务人员读取工资表</span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 判定结果 -->
+    <div class="result-wrap">
+      <section class="card card--result is-allow" id="result" data-decision="ALLOW">
+        <div class="result__top">
+          <div class="verdict">
+            <span class="verdict__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M5 12.6l4.4 4.4L19 7.4" stroke="currentColor" stroke-width="2.4"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <div class="verdict__text">
+              <b id="verdictTitle">操作允许</b>
+              <span id="verdictSub">权限检查通过，文件操作已在受控流程中执行</span>
+            </div>
+          </div>
+          <span class="badge" id="decisionBadge">ALLOW</span>
+        </div>
+
+        <dl class="kv">
+          <div><dt>请求编号</dt><dd class="mono" id="kvRequestId">—</dd></div>
+          <div><dt>判定结果</dt><dd id="kvDecision">ALLOW</dd></div>
+          <div><dt>用户角色</dt><dd id="kvRole">—</dd></div>
+          <div><dt>判定原因</dt><dd id="kvReason">—</dd></div>
+          <div><dt>目标文件</dt><dd id="kvFile">—</dd></div>
+          <div><dt>实际执行状态</dt><dd id="kvExecuted">—</dd></div>
+          <div><dt>操作类型</dt><dd id="kvAction">—</dd></div>
+          <div><dt>判定时间</dt><dd class="mono" id="kvTime">—</dd></div>
+        </dl>
+
+        <div class="proof" id="proof">
+          <span class="proof__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 3.5 20.5 19h-17L12 3.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+              <path d="M12 9.6v4M12 16.2h.01" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <div class="proof__text">
+            <b id="proofTitle">文件操作已执行</b>
+            <span id="proofDesc">判定为 ALLOW，操作已在受控流程中完成，实际结果已写入审计日志。</span>
+          </div>
+        </div>
+
+        <div class="result__acts">
+          <button class="btn btn--ghost btn--sm" type="button" id="btnView" disabled>
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M2.5 10S5.4 4.8 10 4.8 17.5 10 17.5 10 14.6 15.2 10 15.2 2.5 10 2.5 10Z"
+                    stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="10" cy="10" r="2.2" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            查看文件内容
+          </button>
+          <button class="btn btn--ghost btn--sm" type="button" id="btnExport" disabled>
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M10 3v9M6.4 8.6 10 12.2l3.6-3.6M4 15.5h12" stroke="currentColor"
+                    stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            下载文件
+          </button>
+          <span class="result__note" id="resultNote"></span>
+        </div>
+      </section>
+    </div>
+
+    <!-- 权限矩阵 + 最近记录 -->
+    <div class="cols">
+      <section class="card card--matrix">
+        <div class="card__head">
+          <h2>角色权限矩阵</h2>
+          <a class="card__link" href="/rules">查看详情 →</a>
+        </div>
+                <div class="matrix">
+          <div class="matrix__row matrix__row--head">
+            <span>资源类型</span>
+            <span>普通员工</span>
+            <span>财务人员</span>
+            <span>管理员</span>
+          </div>
+          <div class="matrix__row">
+            <span>F001 普通业务报告</span>
+            <span class="mk mk--yes" title="读取与导出均允许">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M8 12.4l2.8 2.8L16.4 9.6" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="mk mk--yes" title="读取与导出均允许">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M8 12.4l2.8 2.8L16.4 9.6" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="mk mk--yes" title="读取与导出均允许">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M8 12.4l2.8 2.8L16.4 9.6" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+          <div class="matrix__row">
+            <span>F002 内部财务报告</span>
+            <span class="mk mk--no" title="读取被拒绝，导出需审批">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M8.2 15.8 15.8 8.2M15.8 15.8 8.2 8.2" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/></svg>
+            </span>
+            <span class="mk mk--yes" title="读取与导出均允许">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M8 12.4l2.8 2.8L16.4 9.6" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="mk mk--yes" title="读取与导出均允许">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M8 12.4l2.8 2.8L16.4 9.6" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+          <div class="matrix__row">
+            <span>F003 敏感工资表</span>
+            <span class="mk mk--no" title="读取与导出均被拒绝">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M8.2 15.8 15.8 8.2M15.8 15.8 8.2 8.2" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/></svg>
+            </span>
+            <span class="mk mk--no" title="读取与导出均被拒绝">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M8.2 15.8 15.8 8.2M15.8 15.8 8.2 8.2" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/></svg>
+            </span>
+            <span class="mk mk--yes" title="读取与导出均允许">
+              <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M8 12.4l2.8 2.8L16.4 9.6" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+        </div>
+        <ul class="legend" style="border-top:1px solid var(--line-soft)">
+          <li><span class="dot dot--allow"></span><b>ALLOW</b>允许执行文件操作</li>
+          <li><span class="dot dot--deny"></span><b>DENY</b>禁止读取或导出</li>
+          <li><span class="dot dot--pending"></span><b>PENDING_APPROVAL</b>审批完成前不得执行</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <div class="card__head">
+          <h2>最近访问记录</h2>
+          <a class="card__link" href="/audit">查看全部 →</a>
+        </div>
+        <div class="tablewrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="width:118px">时间</th>
+                <th style="width:88px">用户</th>
+                <th>资源</th>
+                <th style="width:66px">操作</th>
+                <th style="width:100px">结果</th>
+              </tr>
+            </thead>
+            <tbody id="historyBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="foot">
+      <span class="foot__left">
+        <span class="foot__status"><span class="foot__pulse"></span>策略引擎在线</span>
+        <span class="foot__sep">|</span>
+        <span>最后更新：<span class="foot__time">—</span></span>
+      </span>
+      <span class="foot__ver">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 3.5l7.5 3v5.6c0 4.3-3 7.7-7.5 9.4-4.5-1.7-7.5-5.1-7.5-9.4V6.5l7.5-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+        </svg>
+        AegisData v1.0.0
+      </span>
+    </footer>
+  </div>
+</div>
+
+<p class="sr-only" id="live" role="status" aria-live="polite"></p>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

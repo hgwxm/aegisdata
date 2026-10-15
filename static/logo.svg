@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- AegisData 品牌标识（矢量）
+     结构：盾形上缘即一道波浪——自左上肩线上扬成波峰，向右抽出长尖角后折回，
+           沿盾形内缘下行至右侧中部收笔（右侧开口）；内部一条浅蓝细描边呼应形成层次。
+     纯矢量，无位图、无背景，任意尺寸清晰。 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="AegisData">
+  <defs>
+    <linearGradient id="adg" x1="0%" y1="10%" x2="88%" y2="100%">
+      <stop offset="0%"   stop-color="#2b3f9e"/>
+      <stop offset="28%"  stop-color="#2f6cc0"/>
+      <stop offset="60%"  stop-color="#37a3c9"/>
+      <stop offset="100%" stop-color="#4ad2c0"/>
+    </linearGradient>
+    <linearGradient id="adl" x1="10%" y1="0%" x2="90%" y2="100%">
+      <stop offset="0%"   stop-color="#6fa8ec"/>
+      <stop offset="100%" stop-color="#93f0dd"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 主形：上缘为波浪的盾形轮廓，右侧开口 -->
+  <path fill="none" stroke="url(#adg)" stroke-width="20"
+        stroke-linecap="round" stroke-linejoin="round"
+        d="M64 44
+           C86 20 110 18 128 32
+           C146 46 162 50 178 46
+           L193 43
+           L172 58
+           C154 68 138 64 124 52
+           C104 36 84 46 76 68
+           Q60 106 76 138
+           Q92 168 118 178
+           Q148 166 156 138
+           Q166 106 152 80"/>
+
+  <!-- 内部浅描边：形成通透层次 -->
+  <path fill="none" stroke="url(#adl)" stroke-opacity=".68" stroke-width="9"
+        stroke-linecap="round" stroke-linejoin="round"
+        d="M82 64
+           Q66 102 80 134
+           Q94 160 116 168
+           Q140 158 146 132
+           Q154 104 142 84"/>
+</svg>

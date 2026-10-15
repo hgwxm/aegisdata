@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>登录 · AegisData 企业数据安全管理平台</title>
+<link rel="icon" type="image/png" href="/static/aegisdata-logo.png">
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  /* ── 登录页专属样式 ── */
+  body.login-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #eef2f9 0%, #e8f0fc 50%, #e0f5f0 100%);
+  }
+
+  .login-card {
+    width: 400px;
+    max-width: calc(100vw - 32px);
+    background: var(--surface);
+    border-radius: var(--r-xl);
+    box-shadow: var(--shadow-lg);
+    padding: 40px 36px 32px;
+    border: 1px solid var(--line);
+  }
+
+  .login-card__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 0;
+  }
+
+  .login-card__logo img {
+    width: 180px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .login-card__subtitle {
+    text-align: center;
+    color: var(--ink-3);
+    font-size: 13px;
+    margin-bottom: 28px;
+  }
+
+  .login-form__group {
+    margin-bottom: 18px;
+  }
+
+  .login-form__label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-2);
+    margin-bottom: 6px;
+  }
+
+  .login-form__input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--line);
+    border-radius: var(--r);
+    font-size: 15px;
+    font-family: var(--font);
+    color: var(--ink);
+    background: var(--surface-soft);
+    transition: border-color .15s, box-shadow .15s;
+    box-sizing: border-box;
+  }
+
+  .login-form__input:focus {
+    outline: none;
+    border-color: var(--brand-2);
+    box-shadow: 0 0 0 3px var(--brand-soft);
+    background: var(--surface);
+  }
+
+  .login-form__input::placeholder {
+    color: var(--ink-3);
+  }
+
+  .login-form__btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: var(--r);
+    background: var(--brand);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: var(--font);
+    cursor: pointer;
+    transition: background .15s, transform .05s;
+    margin-top: 6px;
+  }
+
+  .login-form__btn:hover {
+    background: var(--brand-2);
+  }
+
+  .login-form__btn:active {
+    transform: scale(.98);
+  }
+
+  .login-form__btn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+  }
+
+  .login-form__error {
+    color: var(--deny);
+    font-size: 13px;
+    text-align: center;
+    margin-top: 14px;
+    min-height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+</style>
+</head>
+<body class="login-page" data-page="login">
+
+<div class="login-card">
+  <!-- Logo -->
+  <div class="login-card__logo">
+    <img src="/static/aegisdata-logo.png" alt="AegisData">
+  </div>
+  <p class="login-card__subtitle">企业数据安全管理平台</p>
+
+  <!-- 登录表单 -->
+  <form class="login-form" id="loginForm" autocomplete="off">
+    <div class="login-form__group">
+      <label class="login-form__label" for="account">账号</label>
+      <input class="login-form__input" type="text" id="account" name="account"
+             placeholder="请输入账号" autofocus>
+    </div>
+    <div class="login-form__group">
+      <label class="login-form__label" for="password">密码</label>
+      <input class="login-form__input" type="password" id="password" name="password"
+             placeholder="请输入密码">
+    </div>
+    <button class="login-form__btn" type="submit" id="loginBtn">登 录</button>
+    <p class="login-form__error" id="errorMsg"></p>
+  </form>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var form = document.getElementById("loginForm");
+  var accountInput = document.getElementById("account");
+  var passwordInput = document.getElementById("password");
+  var loginBtn = document.getElementById("loginBtn");
+  var errorMsg = document.getElementById("errorMsg");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    errorMsg.textContent = "";
+    loginBtn.disabled = true;
+    loginBtn.textContent = "登录中…";
+
+    var account = accountInput.value.trim();
+    var password = passwordInput.value;
+
+    fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ account: account, password: password })
+    })
+    .then(function (resp) { return resp.json(); })
+    .then(function (data) {
+      if (data.ok) {
+        // 登录成功，跳转到控制台
+        window.location.href = "/";
+      } else {
+        errorMsg.textContent = data.error || "登录失败";
+        loginBtn.disabled = false;
+        loginBtn.textContent = "登 录";
+        passwordInput.value = "";
+        passwordInput.focus();
+      }
+    })
+    .catch(function () {
+      errorMsg.textContent = "网络错误，请稍后重试";
+      loginBtn.disabled = false;
+      loginBtn.textContent = "登 录";
+    });
+  });
+})();
+</script>
+</body>
+</html>
